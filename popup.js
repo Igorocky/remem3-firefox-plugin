@@ -49,7 +49,7 @@ markSelectedButton.addEventListener("click", () => {
   const markedText = `[[${selectedText}]]`;
   selectionTextArea.value =
     value.slice(0, rangeStart) + markedText + value.slice(rangeEnd);
-  const newEnd = rangeStart + markedText.length;
-  selectionTextArea.setSelectionRange(rangeStart, newEnd);
+  const newCaret = rangeStart + markedText.length;
+  selectionTextArea.setSelectionRange(newCaret, newCaret);
   selectionTextArea.focus();
 });
