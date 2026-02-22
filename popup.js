@@ -7,6 +7,8 @@ const markSelectedButton = document.getElementById("mark-selected");
 const saveButton = document.getElementById("save");
 const rememUrlInput = document.getElementById("remem-url");
 const directoryInput = document.getElementById("directory");
+const languagesInput = document.getElementById("languages");
+const selectedLanguageSelect = document.getElementById("selected-language");
 const saveError = document.getElementById("save-error");
 
 browser.runtime
@@ -24,28 +26,94 @@ browser.runtime
 const STORAGE_KEYS = {
   rememUrl: "rememUrl",
   directory: "directory",
+  languages: "languages",
+  selectedLanguage: "selectedLanguage",
 };
 
 browser.storage.local
-  .get([STORAGE_KEYS.rememUrl, STORAGE_KEYS.directory])
+  .get([
+    STORAGE_KEYS.rememUrl,
+    STORAGE_KEYS.directory,
+    STORAGE_KEYS.languages,
+    STORAGE_KEYS.selectedLanguage,
+  ])
   .then((result) => {
     rememUrlInput.value = result[STORAGE_KEYS.rememUrl] || "";
     directoryInput.value = result[STORAGE_KEYS.directory] || "";
+    languagesInput.value = result[STORAGE_KEYS.languages] || "";
+    const storedSelection = result[STORAGE_KEYS.selectedLanguage] || "";
+    updateLanguageOptions(storedSelection);
   })
   .catch(() => {
     rememUrlInput.value = "";
     directoryInput.value = "";
+    languagesInput.value = "";
+    updateLanguageOptions("");
   });
 
 const persistFields = () => {
   browser.storage.local.set({
     [STORAGE_KEYS.rememUrl]: rememUrlInput.value,
     [STORAGE_KEYS.directory]: directoryInput.value,
+    [STORAGE_KEYS.languages]: languagesInput.value,
   });
 };
 
 rememUrlInput.addEventListener("input", persistFields);
 directoryInput.addEventListener("input", persistFields);
+languagesInput.addEventListener("input", () => {
+  persistFields();
+  const selected = selectedLanguageSelect.value;
+  updateLanguageOptions(selected);
+});
+
+const parseLanguages = (value) =>
+  value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+
+const updateLanguageOptions = (selectedValue) => {
+  const languages = parseLanguages(languagesInput.value);
+  selectedLanguageSelect.innerHTML = "";
+
+  if (languages.length === 0) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "No languages";
+    selectedLanguageSelect.appendChild(option);
+    selectedLanguageSelect.disabled = true;
+    persistSelectedLanguage("");
+    return;
+  }
+
+  selectedLanguageSelect.disabled = false;
+  const normalizedSelection = languages.includes(selectedValue)
+    ? selectedValue
+    : languages[0];
+
+  languages.forEach((language) => {
+    const option = document.createElement("option");
+    option.value = language;
+    option.textContent = language;
+    option.selected = language === normalizedSelection;
+    selectedLanguageSelect.appendChild(option);
+  });
+
+  if (normalizedSelection !== selectedValue) {
+    persistSelectedLanguage(normalizedSelection);
+  }
+};
+
+const persistSelectedLanguage = (value) => {
+  browser.storage.local.set({
+    [STORAGE_KEYS.selectedLanguage]: value,
+  });
+};
+
+selectedLanguageSelect.addEventListener("change", () => {
+  persistSelectedLanguage(selectedLanguageSelect.value);
+});
 
 saveButton.addEventListener("click", async () => {
   saveError.textContent = "";
@@ -53,6 +121,7 @@ saveButton.addEventListener("click", async () => {
   const url = `${baseUrl.replace(/\/$/, "")}/save_fill_gaps_card`;
   const payload = {
     dir: directoryInput.value,
+    language: selectedLanguageSelect.value,
     text: selectionTextArea.value,
   };
 

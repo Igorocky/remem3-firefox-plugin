@@ -22,7 +22,7 @@ browser.browserAction.onClicked.addListener(async () => {
     url: POPUP_URL,
     type: "popup",
     width: 800,
-    height: 500,
+    height: 700,
   });
 });
 

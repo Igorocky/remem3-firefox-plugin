@@ -32,6 +32,12 @@
         padding: 4px 6px;
         font: inherit;
       }
+      .field select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px 6px;
+        font: inherit;
+      }
       .actions {
         margin-top: 12px;
       }
@@ -66,6 +72,14 @@
     <div class="field">
       <label for="directory">Directory</label>
       <input id="directory" type="text" />
+    </div>
+    <div class="field">
+      <label for="languages">Languages</label>
+      <input id="languages" type="text" />
+    </div>
+    <div class="field">
+      <label for="selected-language">Selected language</label>
+      <select id="selected-language"></select>
     </div>
     <script src="popup.js"></script>
   </body>
