@@ -35,6 +35,12 @@
       .actions {
         margin-top: 12px;
       }
+      .error {
+        margin-top: 8px;
+        color: #c0392b;
+        font-size: 12px;
+        min-height: 16px;
+      }
       button {
         padding: 6px 10px;
         font: inherit;
@@ -47,8 +53,10 @@
     <div class="content">
       <textarea id="selection-text" placeholder="Selected text will appear here..."></textarea>
     </div>
+    <div id="save-error" class="error" role="alert" aria-live="polite"></div>
     <div class="actions">
       <button id="mark-selected" type="button">Mark selected</button>
+      <button id="save" type="button">Save</button>
       <button id="close-popup" type="button">Close</button>
     </div>
     <div class="field">

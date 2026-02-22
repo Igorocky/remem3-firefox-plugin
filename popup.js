@@ -4,8 +4,10 @@ document.getElementById("close-popup").addEventListener("click", () => {
 
 const selectionTextArea = document.getElementById("selection-text");
 const markSelectedButton = document.getElementById("mark-selected");
+const saveButton = document.getElementById("save");
 const rememUrlInput = document.getElementById("remem-url");
 const directoryInput = document.getElementById("directory");
+const saveError = document.getElementById("save-error");
 
 browser.runtime
   .sendMessage({ type: "get-selection" })
@@ -44,6 +46,36 @@ const persistFields = () => {
 
 rememUrlInput.addEventListener("input", persistFields);
 directoryInput.addEventListener("input", persistFields);
+
+saveButton.addEventListener("click", async () => {
+  saveError.textContent = "";
+  const baseUrl = rememUrlInput.value.trim();
+  const url = `${baseUrl.replace(/\/$/, "")}/save_fill_gaps_card`;
+  const payload = {
+    dir: directoryInput.value,
+    text: selectionTextArea.value,
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      window.close();
+      return;
+    }
+
+    const errorText = await response.text();
+    saveError.textContent = errorText || "Request failed.";
+  } catch (error) {
+    saveError.textContent = error.message || "Request failed.";
+  }
+});
 
 markSelectedButton.addEventListener("click", () => {
   const start = selectionTextArea.selectionStart;
