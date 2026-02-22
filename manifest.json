@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "Hello Popup Button",
+  "name": "Remem",
   "version": "1.0.0",
-  "description": "Adds a toolbar button that shows a hello popup.",
+  "description": "Allows to save selected text to Remem database",
   "browser_action": {
-    "default_title": "Hello Popup"
+    "default_title": "Save to Remem"
   },
   "background": {
     "scripts": ["background.js"]

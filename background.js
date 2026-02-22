@@ -21,8 +21,8 @@ browser.browserAction.onClicked.addListener(async () => {
   await browser.windows.create({
     url: POPUP_URL,
     type: "popup",
-    width: 360,
-    height: 240,
+    width: 800,
+    height: 360,
   });
 });
 
