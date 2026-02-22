@@ -18,6 +18,20 @@
         font: inherit;
         box-sizing: border-box;
       }
+      .field {
+        margin-top: 10px;
+      }
+      .field label {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+      .field input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 4px 6px;
+        font: inherit;
+      }
       .actions {
         margin-top: 12px;
       }
@@ -32,6 +46,14 @@
     <div>Saving to Remem database</div>
     <div class="content">
       <textarea id="selection-text" placeholder="Selected text will appear here..."></textarea>
+    </div>
+    <div class="field">
+      <label for="remem-url">Remem URL</label>
+      <input id="remem-url" type="text" />
+    </div>
+    <div class="field">
+      <label for="directory">Directory</label>
+      <input id="directory" type="text" />
     </div>
     <div class="actions">
       <button id="mark-selected" type="button">Mark selected</button>
