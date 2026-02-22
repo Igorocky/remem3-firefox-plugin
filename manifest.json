@@ -1,10 +1,13 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Hello Popup Button",
   "version": "1.0.0",
   "description": "Adds a toolbar button that shows a hello popup.",
-  "action": {
-    "default_title": "Hello Popup",
-    "default_popup": "popup.html"
-  }
+  "browser_action": {
+    "default_title": "Hello Popup"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": ["windows"]
 }

@@ -11,9 +11,25 @@
         font: 14px/1.4 Arial, sans-serif;
         min-width: 180px;
       }
+      .actions {
+        margin-top: 12px;
+      }
+      button {
+        padding: 6px 10px;
+        font: inherit;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
-    Hello from plugin!
+    <div>Hello from plugin!</div>
+    <div class="actions">
+      <button id="close-popup" type="button">Close</button>
+    </div>
+    <script>
+      document.getElementById("close-popup").addEventListener("click", () => {
+        window.close();
+      });
+    </script>
   </body>
 </html>
